@@ -1,0 +1,10 @@
+#!/bin/bash -l
+#$ -cwd
+#$ -l h_rt=10:00:00
+#$ -N NAME
+
+echo " HOST: "`hostname`
+echo "COMMAND"
+echo "["`date`"] Starting command"
+COMMAND
+echo "["`date`"] Done."

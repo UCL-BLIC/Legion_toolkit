@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+##############################################################################
+#   Copyright notice:   Copyright (c) Richard Yim*, 16 Aug 2016, v1.0
+#                       All rights reserved.
+#
+#   Contributors: Richard Yim
+#
+#  *Department of Cancer Biology
+#   Cancer Institute
+#   University College London
+#
+#   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+#   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED 
+#   TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+#   PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+#   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+#   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+#   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+#   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+#   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+#   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#   You are free to use, distribute and/or modify this software as you wish as
+#   long as the following conditions are met:
+#   The software must retain this copyright notice.
+#   Contributors must add their names to the contributors list.
+#   Neither the name of the copyright holder nor the names of its contributors 
+#   may be used to endorse or promote products derived from this software
+#   without specific prior written permission.
+#
+##############################################################################
+#
+#   INSTALLATION
+#   Place this script in a directory of your choice.
+#   Add this directory to your $PATH in your chosen environment config file
+#   (E.G.: ~/.bashrc).
+#
+##############################################################################
+
+my @lines = split(/\n/, `qstat`);
+my $qdelcommand = "qdel ";          # Additions to command go here
+foreach my $line (@lines) {
+    if ($line =~ m/^\d{3,}\s+[\d\.]+/) {
+        (my $jobnumb = $line) =~ s/^(\d+)\s.*/$1/;
+        $qdelcommand = $qdelcommand . $jobnumb . " ";
+    }
+}
+
+system("$qdelcommand");

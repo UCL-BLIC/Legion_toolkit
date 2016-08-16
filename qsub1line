@@ -1,0 +1,87 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+use FindBin;
+my $bindir = $FindBin::Bin;
+
+##############################################################################
+#   Copyright notice:   Copyright (c) Richard Yim*, 16 Aug 2016, v1.1
+#                       All rights reserved.
+#
+#   Contributors: Richard Yim
+#
+#  *Department of Cancer Biology
+#   Cancer Institute
+#   University College London
+#
+#   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
+#   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED 
+#   TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 
+#   PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR 
+#   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+#   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+#   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+#   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+#   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+#   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+#   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#   You are free to use, distribute and/or modify this software as you wish as
+#   long as the following conditions are met:
+#   The software must retain this copyright notice.
+#   Contributors must add their names to the contributors list.
+#   Neither the name of the copyright holder nor the names of its contributors 
+#   may be used to endorse or promote products derived from this software
+#   without specific prior written permission.
+#
+##############################################################################
+#
+#   INSTALLATION
+#   Place the files qsub1line and qsub1line in a directory in a writeable
+#   filesystem.
+#   Add this directory to your $PATH in your chosen environment config file
+#   (E.G.: ~/.bashrc).
+#
+##############################################################################
+
+#   Check all files are present
+my @dependencies = (
+    $bindir . "/qsub1line.template"
+);
+my $missingdependencies = 0;
+foreach my $file (@dependencies) {
+    unless (-e $file) {
+        print "Fatal error: Missing dependency:\n$file\n";
+        $missingdependencies = 1;
+    }
+}
+exit(1) if $missingdependencies == 1;       # Crap out if missing files
+
+#   General idiotproofing
+if (!$ARGV[0]) {
+    print "Invalid input. Usage: \"qsub1line <command> [arguments]\"\n";
+    exit(1);
+} elsif ($ARGV[1]) {
+    print "Put command and its arguments in double quotes: \"\"\n";
+    exit(1);
+}
+
+#   Parse in command line
+my $command = $ARGV[0];
+(my $procname = $command) =~ s/\s.*//;      # Set a name for process
+print "Process name:\t$procname\nCommand passed:\t$command\n";
+
+#   Write qsub script so Legion people are happy
+open(IN, $bindir . "/qsub1line.template");
+open(OUT, ">$bindir/.qsub1line.temp")
+    or die "Script not in writeable filesystem.\n";
+foreach my $line (<IN>) {
+    $line =~ s/NAME/$procname/g;
+    $line =~ s/COMMAND/$command/g;
+    print OUT $line;
+}
+close(OUT);
+close(IN);
+
+#   Run qsub script
+system("qsub $bindir/.qsub1line.temp");
