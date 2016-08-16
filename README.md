@@ -7,7 +7,8 @@ All scripts should be placed in a directory in a filesystem which is writeable f
 
 + qsub1line: Create a generic single-core qsub script and submit this to the
              queue. Usage: 
-```qsub1line "command and arguments to pass to qsub command"
+```
+qsub1line "command and arguments to pass to qsub command"
 ```
 + qwatch: Clear the terminal and watch Legion's queue, refreshing every 120
           seconds.
