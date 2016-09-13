@@ -3,8 +3,20 @@
 #$ -l h_rt=10:00:00
 #$ -N NAME
 
+#   Copy version of qsub script used to current dir. for archival purposes
+scriptloc="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/`basename "$0"`
+scriptcopy=`pwd`/.`date +%Y%m%d-%H_%M_%S`_NAME_`basename "$0"`
+cp ${scriptloc} ${scriptcopy}
+
+#   Logging
 echo " HOST: "`hostname`
 echo "COMMAND"
+echo "Script file: ${scriptcopy}"
 echo "["`date`"] Starting command"
+echo "-------------------------"
+
+#   Command
 COMMAND
+
+#   More logging
 echo "["`date`"] Done."

@@ -5,10 +5,10 @@ use FindBin;
 my $bindir = $FindBin::Bin;
 
 ##############################################################################
-#   Copyright notice:   Copyright (c) Richard Yim*, 16 Aug 2016, v1.1
+#   Copyright notice:   Copyright (c) Richard Yim, 16 Aug 2016, v1.1
 #                       All rights reserved.
 #
-#   Contributors: Richard Yim
+#   Contributors: Richard Yim*
 #
 #  *Department of Cancer Biology
 #   Cancer Institute

@@ -3,10 +3,10 @@ use warnings;
 use strict;
 
 ##############################################################################
-#   Copyright notice:   Copyright (c) Richard Yim*, 16 Aug 2016, v1.0
+#   Copyright notice:   Copyright (c) Richard Yim, 16 Aug 2016, v1.0
 #                       All rights reserved.
 #
-#   Contributors: Richard Yim
+#   Contributors: Richard Yim*
 #
 #  *Department of Cancer Biology
 #   Cancer Institute
