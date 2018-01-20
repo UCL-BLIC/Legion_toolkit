@@ -44,6 +44,6 @@ do
 	printf "\033c"
 	echo
 	date
-	qstat | sed 's/\s\s/ /g' | sed 's/\s*$//'
+    qstat | awk -v OFS='\t' '{print $1, $2, $3, $5}' | grep -v "\-\-\-\-\-"
 	sleep 120
 done
