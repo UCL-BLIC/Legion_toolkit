@@ -44,6 +44,10 @@ do
 	printf "\033c"
 	echo
 	date
-    qstat | awk -v OFS='\t' '{print $1, $2, $3, $5}' | grep -v "\-\-\-\-\-"
+    qstat -xml | tr '\n' ' ' | sed 's#<job_list[^>]*>#\n#g' \
+        | sed 's#<[^>]*>##g' | grep " " | column -t
 	sleep 120
 done
+
+#   Old version of the qstat command
+#    qstat | awk -v OFS='\t' '{print $1, $2, $3, $5}' | grep -v "\-\-\-\-\-"
